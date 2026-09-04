@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "JobFit Fill",
+  "version": "0.1.0",
+  "description": "Fill the current job application form from your local JobFit profile. Does not submit.",
+  "action": {
+    "default_title": "JobFit Fill",
+    "default_popup": "popup.html"
+  },
+  "permissions": ["activeTab", "scripting"],
+  "host_permissions": ["http://localhost:3000/*", "http://127.0.0.1:3000/*"]
+}

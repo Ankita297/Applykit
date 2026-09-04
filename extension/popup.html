@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body { width: 240px; margin: 0; padding: 14px; font: 13px/1.4 ui-sans-serif, system-ui, sans-serif; color: #18201d; }
+      p { margin: 0 0 12px; color: #69736e; font-size: 12px; }
+      button { width: 100%; min-height: 38px; border: 0; border-radius: 8px; color: #fff; background: #1d6b4f; font-weight: 700; cursor: pointer; }
+      button:disabled { opacity: .6; }
+      #status { margin-top: 10px; font-size: 12px; }
+    </style>
+  </head>
+  <body>
+    <p>Fills contact fields on this page from JobFit. Review everything. It never submits.</p>
+    <button id="fill">Fill this page</button>
+    <div id="status"></div>
+    <script src="popup.js"></script>
+  </body>
+</html>
