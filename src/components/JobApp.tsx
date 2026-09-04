@@ -73,6 +73,13 @@ export default function JobApp() {
       .catch((error) => setMessage(error.message))
   }, [])
 
+  useEffect(() => {
+    const viewParam = new URLSearchParams(window.location.search).get('view')
+    if (viewParam === 'resume' || viewParam === 'profile' || viewParam === 'application' || viewParam === 'tracker') {
+      setView(viewParam)
+    }
+  }, [])
+
   const counts = useMemo(() => ({
     total: applications.length,
     active: applications.filter((item) => ['applied', 'interview'].includes(item.status)).length,

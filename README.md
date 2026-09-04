@@ -4,6 +4,23 @@ Local-first workspace for a job search: store a master resume, tailor it to a jo
 
 Nothing is uploaded to a cloud account. Application data lives in SQLite on your machine (`.data/job-helper.db`). AI is optional and only used when you generate a document.
 
+## Screenshots
+
+<p align="center">
+  <img src="docs/screenshots/jobfit-tracker.png" alt="Application tracker" width="900" />
+</p>
+<p align="center"><em>Tracker — pipeline, statuses, and every role in one list.</em></p>
+
+<p align="center">
+  <img src="docs/screenshots/jobfit-application.png" alt="Application workspace" width="900" />
+</p>
+<p align="center"><em>Application — JD, tailored resume, cover letter, cold email, ATS check.</em></p>
+
+<p align="center">
+  <img src="docs/screenshots/jobfit-resume.png" alt="Master resume" width="900" />
+</p>
+<p align="center"><em>Master resume — paste or upload PDF; tailored versions start here.</em></p>
+
 ## What it does
 
 | Area | Behavior |
