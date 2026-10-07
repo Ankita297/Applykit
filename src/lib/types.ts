@@ -38,5 +38,7 @@ export type AtsResult = {
   score: number
   matched: string[]
   missing: string[]
-  checks: { label: string; passed: boolean }[]
+  improve: string[]
+  keep: string[]
+  warning?: string
 }

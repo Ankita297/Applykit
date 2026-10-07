@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "tsx --test src/lib/ats.test.ts src/lib/pdfText.test.ts src/lib/formFill.test.ts"
+    "test": "tsx --test src/lib/ats.test.ts src/lib/pdfText.test.ts src/lib/formFill.test.ts src/lib/resumeFormat.test.ts src/lib/resumePdf.test.ts src/lib/emphasize.test.ts"
   },
   "dependencies": {
     "better-sqlite3": "^11.10.0",

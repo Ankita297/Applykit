@@ -3,7 +3,7 @@ import './globals.css'
 
 export const metadata: Metadata = {
   title: 'JobFit — Job application workspace',
-  description: 'Tailor your resume and track every job application.',
+  description: 'Score your resume against each job and track applications.',
 }
 
 export default function RootLayout({

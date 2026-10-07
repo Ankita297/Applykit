@@ -1,8 +1,21 @@
 # JobFit
 
-Local-first workspace for a job search: store a master resume, tailor it to a job description, check keyword/format fit, draft a cover letter and cold email, track applications, and fill common form fields from a saved profile.
+Local job-search workspace. You keep one master resume. You paste a job description. JobFit scores the fit. You edit the resume.
 
-Nothing is uploaded to a cloud account. Application data lives in SQLite on your machine (`.data/job-helper.db`). AI is optional and only used when you generate a document.
+It does **not** generate a rewritten resume. There is no cloud account and no Google login. Data stays in SQLite on the machine that runs the app (`.data/`). Clone the repo and you get an empty workspace.
+
+## What you get
+
+| Area | Behavior |
+| --- | --- |
+| **Master resume** | Upload a PDF or start from a template and save text. Source of truth for the fit check. |
+| **Applications** | Company, role, JD, URL, status (`draft` → `applied` → `interview` → `rejected` → `offer`), notes, recruiter fields. |
+| **Fit check** | Compares the master resume to the JD. Lists concrete skills and requirements (not filler like “experience” or “features”): what is missing, what matches, what to improve, what not to change. Does not rewrite the resume. Not Workday or Greenhouse. |
+| **Cover letter / cold email** | Optional. Needs an API key. Uses only facts already on the resume. |
+| **Apply profile** | Contact fields used by the Chrome extension. |
+| **JobFit Fill** | Unpacked Chrome extension. Fills **empty** matching inputs on the job tab. Never submits. Skips salary, EEO, SSN, and similar. |
+
+The tracker always works offline. Fit check uses `OPENAI_API_KEY` when set (concrete skills); otherwise it falls back to local word overlap. Optional letters need the key.
 
 ## Screenshots
 
@@ -14,51 +27,34 @@ Nothing is uploaded to a cloud account. Application data lives in SQLite on your
 <p align="center">
   <img src="docs/screenshots/jobfit-application.png" alt="Application workspace" width="900" />
 </p>
-<p align="center"><em>Application — JD, tailored resume, cover letter, cold email, ATS check.</em></p>
+<p align="center"><em>Application — paste a JD, then score fit against the master resume.</em></p>
 
 <p align="center">
   <img src="docs/screenshots/jobfit-resume.png" alt="Master resume" width="900" />
 </p>
-<p align="center"><em>Master resume — paste or upload PDF; tailored versions start here.</em></p>
+<p align="center"><em>Master resume — paste or upload PDF. Fit checks start here.</em></p>
 
-## What it does
+## Give this repo to someone
 
-| Area | Behavior |
-| --- | --- |
-| **Master resume** | Paste Markdown/text or upload a PDF (text is extracted). This is the source of truth for generation. |
-| **Applications** | Company, role, JD, URL, status (`draft` → `applied` → `interview` → `rejected` → `offer`), notes, recruiter fields. |
-| **Tailored resume** | Rewrites the master resume for the JD. Does not invent jobs, skills, or metrics. |
-| **Cover letter / cold email** | Optional drafts from the same facts. |
-| **ATS check** | Heuristic keyword + structure score. Not a real Workday/Greenhouse score. |
-| **Export** | Download tailored resume as Markdown or PDF. |
-| **Apply profile** | Contact fields (name, email, phone, links, address) used by the Chrome extension. |
-| **JobFit Fill** | Unpacked Chrome extension: on the job tab, fills **empty** matching inputs. Does not submit. Skips salary, EEO, SSN, and similar. |
+They get the app, not your search.
 
-Tracker and ATS work without an API key. Generation needs `OPENAI_API_KEY` (or any OpenAI-compatible base URL).
+- `.data/` (SQLite, uploaded resume PDF) is gitignored.
+- `.env.local` (API key) is gitignored.
+- First `npm run dev` creates a fresh `.data/` on their machine.
 
-## Tech stack
-
-- **App:** [Next.js](https://nextjs.org/) 13 (App Router), React 18, TypeScript
-- **Data:** SQLite via `better-sqlite3` (local file, gitignored)
-- **PDF in:** `pdf-parse` (resume upload)
-- **PDF out:** `jspdf` (tailored resume download)
-- **Generation:** OpenAI Chat Completions API (`gpt-4o-mini` by default)
-- **Extension:** Chrome Manifest V3 (`activeTab` + `scripting`; reads `http://localhost:3000/api/profile`)
+Do not put keys in `.env.example`. Do not commit resumes or PDFs.
 
 ## Run locally
 
 ```bash
 npm install
 cp .env.example .env.local
-```
-
-Put an API key in `.env.local` only if you want document generation.
-
-```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000) (landing), then **Open workspace**, or go to [http://localhost:3000/app](http://localhost:3000/app).
+
+Add `OPENAI_API_KEY` to `.env.local` for a stronger fit check and for cover letter / cold email.
 
 ```bash
 npm test
@@ -69,14 +65,16 @@ npm run build
 ## Chrome extension
 
 1. Keep the app running on port 3000.
-2. Save an **Apply profile** in the app.
-3. Chrome → `chrome://extensions` → Developer mode → **Load unpacked** → select the `extension/` folder.
-4. On an application form, click **JobFit Fill** → **Fill this page**. Review every field before you submit.
+2. Save an **Apply profile** in the workspace.
+3. Chrome → `chrome://extensions` → Developer mode → **Load unpacked** → the `extension/` folder.
+4. On the application form, click **JobFit Fill** → **Fill this page**. Review every field, then you submit.
 
-Workday and other custom widgets may not expose normal inputs; the extension only fills what it can map.
+Workday-style widgets often are not real inputs until you click them. The extension only fills what it can map.
 
-## Privacy
+## Tech stack
 
-- `.data/` and `.env.local` are gitignored.
-- The extension only talks to your local JobFit server.
-- Do not commit resumes, PDFs, or personal documents.
+- **App:** [Next.js](https://nextjs.org/) 13 (App Router), React 18, TypeScript
+- **Data:** SQLite via `better-sqlite3` (`.data/job-helper.db`, gitignored)
+- **PDF in:** `pdf-parse` (master resume upload)
+- **Optional generation:** OpenAI Chat Completions (`gpt-4o-mini` by default) for cover letter / cold email
+- **Extension:** Chrome Manifest V3 (`activeTab` + `scripting`; reads `http://localhost:3000/api/profile`)

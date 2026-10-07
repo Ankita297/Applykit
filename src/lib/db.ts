@@ -4,6 +4,8 @@ import path from 'node:path'
 
 const dataDirectory = path.join(process.cwd(), '.data')
 fs.mkdirSync(dataDirectory, { recursive: true })
+export const masterResumePdfPath = path.join(dataDirectory, 'master-resume.pdf')
+export const masterResumeNamePath = path.join(dataDirectory, 'master-resume-name.txt')
 
 const db = new Database(path.join(dataDirectory, 'job-helper.db'))
 db.pragma('journal_mode = WAL')
